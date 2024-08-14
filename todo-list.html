@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDo-List</title>
+    <style>
+      body * {
+        padding: 7px 10px;
+        margin: 5px 8px;
+        color: #ffffff;
+        font-size: 12px;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+      h1 {
+        font-size: 20px;
+        font-weight: 500;
+      }
+      ul,
+      li {
+        list-style: none;
+      }
+      .complete {
+        text-decoration: line-through;
+      }
+      #container {
+        width: 450px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h1 id="title">오늘 할 일</h1>
+      <div id="inputBox">
+        <input type="text" placeholder="할일을 입력해주세요." />
+        <button id="submit">등록</button>
+      </div>
+    </div>
+    <script>
+      const input = document.querySelector("input");
+      const submitBtn = document.querySelector("#submit");
+      const container = document.querySelector("#container");
+
+      submitBtn.addEventListener("click", () => {
+        // 할일을 1도 등록 안한 상태에서 할일을 등록하면 ul을 먼저 생성해줌.
+        if (!document.querySelector("ul")) {
+          const newListContainer = document.createElement("div");
+          const newUl = document.createElement("ul");
+          newListContainer.append(newUl);
+          container.append(newListContainer);
+        }
+
+        // innerHTML 사용해보기, 배열 선언해서 할일 추가하면 빈 배열에 push하고, 전체적으로 뿌리기
+        let newLi = document.createElement("li");
+        newLi.textContent = input.value;
+        document.querySelector("ul").append(newLi);
+        const newBtn = document.createElement("button");
+        newLi.append(newBtn);
+        newBtn.className = "deleteBtn";
+        newBtn.textContent = "삭제";
+        newBtn.addEventListener("click", () => {
+          newBtn.parentElement.remove();
+        });
+        const checkBtn = document.createElement("input");
+        checkBtn.setAttribute("type", "checkbox");
+        newLi.prepend(checkBtn);
+        input.value = null;
+
+        checkBtn.addEventListener("click", () => {
+          if (checkBtn.checked == true) {
+            newLi.classList.add("complete");
+          } else {
+            newLi.classList.remove("complete");
+          }
+        });
+      });
+      // const deleteBtn = document.querySelector("#deleteBtn");
+      // deleteBtn.addEventListener("click", () => {
+      //   console.log(this.target);
+      // });
+    </script>
+  </body>
+</html>
+
+<!--
+1. todolist 화면 가운데에 배치하기
+
+2. input 창에 할일을 입력받고, 등록 버튼을 클릭하면 할일 목록에 추가된다.
+ => 단, form 태그는 사용하지 말자. ( form태그는 서버에 정보를 보낼 때 사용하는 것.)
+
+3. 할일 옆에 체크박스 생성함.
+  => 할일 완료 => 체크 + 취소선, 할일 안함 => 체크x, 체크 박스를 다시 누르면 원상복귀 toggle
+  hint! 체크박스 : 80p changeEvent 사용(입력된 값이 바뀌는 순간에 이벤트가 발생함.)
+
+4. 할일 목록 옆에 삭제 버튼 생성.
+  => 삭제버튼을 클릭하면 할일 아예 삭제됨.
+  할일 등록 할 때마다 배열에 요소를 넣어줌.
+  배열에 정보를 담아놓고, 그 데이터들을 배열에 정의하고, 그 배열을 순회하면서 화면에 보여줌.
+
+-->
